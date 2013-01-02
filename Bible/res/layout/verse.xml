@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <Button
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="@string/back_button"
+            android:textColor="#ff0000"
+            android:textSize="16dip"
+            android:textStyle="bold" />
+
+        <RelativeLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/back" >
+
+            <ImageView
+                android:id="@+id/prevVerse"
+                android:layout_width="wrap_content"
+                android:layout_height="25dip"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="5dip"
+                android:contentDescription="@string/content_description2"
+                android:src="@drawable/previous" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="20dip"
+                android:textColor="#EEAD0E"
+                android:textSize="18dip"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/nextVerse"
+                android:layout_width="wrap_content"
+                android:layout_height="25dip"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="5dip"
+                android:contentDescription="@string/content_description1"
+                android:gravity="right"
+                android:src="@drawable/next" />
+        </RelativeLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/toolbar"
+            android:layout_marginLeft="20dip"
+            android:layout_marginRight="20dip" >
+
+            <TextView
+                android:id="@+id/verse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#EEAD0E"
+                android:textSize="18dip"
+                android:textStyle="bold" />
+        </ScrollView>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" >
+
+        <ZoomControls
+            android:id="@+id/zoomcontrols"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_toRightOf="@id/back" />
+    </RelativeLayout>
+
+</RelativeLayout>

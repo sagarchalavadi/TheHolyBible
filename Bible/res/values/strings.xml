@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name"><b>The Holy Bible</b></string>
+    <string name="content_description1"><b>next image</b></string>
+    <string name="content_description2"><b>prev image</b></string>
+    <string name="back_button">Back</string>
+    <string name="book_selection_part">Choose Book</string>
+    <string name="and_text">and</string>
+    <string name="chapter_selection_part">Choose Chapter</string>
+
+</resources>
