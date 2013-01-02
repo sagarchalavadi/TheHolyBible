@@ -15,13 +15,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,10 +27,8 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -43,6 +39,7 @@ import com.google.ads.AdListener;
 import com.google.ads.AdRequest;
 import com.google.ads.AdRequest.ErrorCode;
 import com.google.ads.AdView;
+import com.sacred.bible.util.Util;
 
 public class BibleActivity extends Activity implements BgDataHandler,
 		AdListener {
@@ -58,20 +55,8 @@ public class BibleActivity extends Activity implements BgDataHandler,
 	private int chapterNumber = 0;
 	private ArrayList<ArrayList<String>> bibleData;
 	private AdView adView;
-	static String[] booksArray = new String[] { "Genesis", "Exodus",
-			"Leviticus", "Numbers", "Deuteronomy", "Joshua", "Judges", "Ruth",
-			"1 Samuel", "2 Samuel", "1 Kings", "2 Kings", "1 Chronicles",
-			"2 Chronicles", "Ezra", "Nehemiah", "Esther", "Job", "Psalms",
-			"Proverbs", "Ecclesiastes", "Song of Solomon", "Isaiah",
-			"Jeremiah", "Lamentations", "Ezekiel", "Daniel", "Hosea", "Joel",
-			"Amos", "Obadiah", "Jonah", "Micah", "Nahum", "Habakkuk",
-			"Zephaniah", "Haggai", "Zechariah", "Malachi" };
-	static String[] booksArray1 = new String[] { "Matthew", "Mark", "Luke",
-			"John", "Acts", "Romans", "1 Corinthians", "2 Corinthians",
-			"Galatians", "Ephesians", "Philippians", "Colossians",
-			"1 Thessalonians", "2 Thessalonians", "1 Timothy", "2 Timothy",
-			"Titus", "Philemon", "Hebrews", "James", "1 Peter", "2 Peter",
-			"1 John", "2 John", "3 John", "Jude", "Revelation" };
+	private String[] booksArray;
+	private String[] booksArray1;
 	private boolean testamentOld;
 	private int currentBookNumber;
 	private GestureDetector gestureDetector;
@@ -80,15 +65,15 @@ public class BibleActivity extends Activity implements BgDataHandler,
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		((TextView) ((FrameLayout) ((LinearLayout) ((ViewGroup) getWindow()
-				.getDecorView()).getChildAt(0)).getChildAt(0)).getChildAt(0))
-				.setGravity(Gravity.CENTER);
-		((TextView) ((FrameLayout) ((LinearLayout) ((ViewGroup) getWindow()
-				.getDecorView()).getChildAt(0)).getChildAt(0)).getChildAt(0))
-				.setTextColor(Color.WHITE);
-		((TextView) ((FrameLayout) ((LinearLayout) ((ViewGroup) getWindow()
-				.getDecorView()).getChildAt(0)).getChildAt(0)).getChildAt(0))
-				.setTextSize(18);
+		// ((TextView) ((FrameLayout) ((LinearLayout) ((ViewGroup) getWindow()
+		// .getDecorView()).getChildAt(0)).getChildAt(0)).getChildAt(0))
+		// .setGravity(Gravity.CENTER);
+		// ((TextView) ((FrameLayout) ((LinearLayout) ((ViewGroup) getWindow()
+		// .getDecorView()).getChildAt(0)).getChildAt(0)).getChildAt(0))
+		// .setTextColor(Color.WHITE);
+		// ((TextView) ((FrameLayout) ((LinearLayout) ((ViewGroup) getWindow()
+		// .getDecorView()).getChildAt(0)).getChildAt(0)).getChildAt(0))
+		// .setTextSize(18);
 		setContentView(R.layout.main);
 		next = (ImageView) findViewById(R.id.nextBook);
 		prev = (ImageView) findViewById(R.id.prevBook);
@@ -97,6 +82,9 @@ public class BibleActivity extends Activity implements BgDataHandler,
 		selected_book_name = (TextView) findViewById(R.id.selected_book_name);
 		selected_chapter_number = (TextView) findViewById(R.id.selected_chapter_number);
 		content = (ListView) findViewById(R.id.bibleContent);
+		Util util = new Util();
+		booksArray = util.getBookArray();
+		booksArray1 = util.getBookArray1();
 		threadRunnningStatus = true;
 		adThread.start();
 		adView = (AdView) BibleActivity.this.findViewById(R.id.adView);
@@ -113,26 +101,9 @@ public class BibleActivity extends Activity implements BgDataHandler,
 			}
 		};
 
-		InputStream iS = null;
 		testamentOld = true;
 		currentBookNumber = 0;
-		try {
-			iS = getResources().getAssets().open("testament1/book1.txt");
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		SAXParserFactory factory = SAXParserFactory.newInstance();
-		try {
-			SAXParser parser = factory.newSAXParser();
-			if (iS != null)
-				parser.parse(iS, new SaxHelper(BibleActivity.this));
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
-		} catch (SAXException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		parseFile("testament1/book1.txt");
 		selected_book_name.setText(booksArray[currentBookNumber] + ":");
 		selected_chapter_number.setText(""
 				+ String.valueOf((chapterNumber + 1)));
@@ -155,34 +126,11 @@ public class BibleActivity extends Activity implements BgDataHandler,
 						@Override
 						public void onItemClick(AdapterView<?> arg0, View arg1,
 								int arg2, long arg3) {
-							if (currentBookNumber == arg2) {
-
-							} else {
+							if (currentBookNumber != arg2) {
 								currentBookNumber = arg2;
 								chapterNumber = 0;
-								InputStream iS = null;
-								try {
-									iS = getResources().getAssets().open(
-											"testament1/book" + (arg2 + 1)
-													+ ".txt");
-								} catch (IOException e1) {
-									e1.printStackTrace();
-								}
-								SAXParserFactory factory = SAXParserFactory
-										.newInstance();
-								try {
-									SAXParser parser = factory.newSAXParser();
-									if (iS != null)
-										parser.parse(iS, new SaxHelper(
-												BibleActivity.this));
-
-								} catch (ParserConfigurationException e) {
-									e.printStackTrace();
-								} catch (SAXException e) {
-									e.printStackTrace();
-								} catch (IOException e) {
-									e.printStackTrace();
-								}
+								parseFile("testament1/book" + (arg2 + 1)
+										+ ".txt");
 								selected_book_name.setText(booksArray[arg2]
 										+ ":");
 								selected_chapter_number.setText(String
@@ -199,34 +147,11 @@ public class BibleActivity extends Activity implements BgDataHandler,
 						@Override
 						public void onItemClick(AdapterView<?> arg0, View arg1,
 								int arg2, long arg3) {
-							if (currentBookNumber == arg2) {
-
-							} else {
+							if (currentBookNumber != arg2) {
 								currentBookNumber = arg2;
 								chapterNumber = 0;
-								InputStream iS = null;
-								try {
-									iS = getResources().getAssets().open(
-											"testament2/book" + (arg2 + 1)
-													+ ".txt");
-								} catch (IOException e1) {
-									e1.printStackTrace();
-								}
-								SAXParserFactory factory = SAXParserFactory
-										.newInstance();
-								try {
-									SAXParser parser = factory.newSAXParser();
-									if (iS != null)
-										parser.parse(iS, new SaxHelper(
-												BibleActivity.this));
-
-								} catch (ParserConfigurationException e) {
-									e.printStackTrace();
-								} catch (SAXException e) {
-									e.printStackTrace();
-								} catch (IOException e) {
-									e.printStackTrace();
-								}
+								parseFile("testament2/book" + (arg2 + 1)
+										+ ".txt");
 								selected_book_name.setText(booksArray1[arg2]
 										+ ":");
 								selected_chapter_number.setText(String
@@ -259,48 +184,7 @@ public class BibleActivity extends Activity implements BgDataHandler,
 						public void onItemClick(AdapterView<?> arg0, View arg1,
 								int arg2, long arg3) {
 							chapterNumber = arg2;
-							if (chapterNumber == 0) {
-								contentAdapter = new ContentAdapter(
-										BibleActivity.this, bibleData
-												.get(chapterNumber));
-								content.setAdapter(contentAdapter);
-								contentAdapter.dataChange();
-								prev.setVisibility(View.INVISIBLE);
-								next.setVisibility(View.VISIBLE);
-								selected_book_name
-										.setText(booksArray[currentBookNumber]
-												+ ":");
-								selected_chapter_number.setText(String
-										.valueOf((chapterNumber + 1)));
-							} else if (chapterNumber == bibleData.size() - 1) {
-								contentAdapter = new ContentAdapter(
-										BibleActivity.this, bibleData
-												.get(chapterNumber));
-								content.setAdapter(contentAdapter);
-								contentAdapter.dataChange();
-								next.setVisibility(View.INVISIBLE);
-								prev.setVisibility(View.VISIBLE);
-								selected_book_name
-										.setText(booksArray[currentBookNumber]
-												+ ":");
-								selected_chapter_number.setText(String
-										.valueOf((chapterNumber + 1)));
-
-							} else {
-								contentAdapter = new ContentAdapter(
-										BibleActivity.this, bibleData
-												.get(chapterNumber));
-								content.setAdapter(contentAdapter);
-								contentAdapter.dataChange();
-								next.setVisibility(View.VISIBLE);
-								prev.setVisibility(View.VISIBLE);
-								selected_book_name
-										.setText(booksArray[currentBookNumber]
-												+ ":");
-								selected_chapter_number.setText(String
-										.valueOf((chapterNumber + 1)));
-
-							}
+							onChapterSelection(true);
 							dialog.dismiss();
 						}
 					});
@@ -313,48 +197,7 @@ public class BibleActivity extends Activity implements BgDataHandler,
 						public void onItemClick(AdapterView<?> arg0, View arg1,
 								int arg2, long arg3) {
 							chapterNumber = arg2;
-							if (chapterNumber == 0) {
-								contentAdapter = new ContentAdapter(
-										BibleActivity.this, bibleData
-												.get(chapterNumber));
-								content.setAdapter(contentAdapter);
-								contentAdapter.dataChange();
-								prev.setVisibility(View.INVISIBLE);
-								next.setVisibility(View.VISIBLE);
-								selected_book_name
-										.setText(booksArray1[currentBookNumber]
-												+ ":");
-								selected_chapter_number.setText(String
-										.valueOf((chapterNumber + 1)));
-							} else if (chapterNumber == bibleData.size() - 1) {
-								contentAdapter = new ContentAdapter(
-										BibleActivity.this, bibleData
-												.get(chapterNumber));
-								content.setAdapter(contentAdapter);
-								contentAdapter.dataChange();
-								next.setVisibility(View.INVISIBLE);
-								prev.setVisibility(View.VISIBLE);
-								selected_book_name
-										.setText(booksArray1[currentBookNumber]
-												+ ":");
-								selected_chapter_number.setText(String
-										.valueOf((chapterNumber + 1)));
-
-							} else {
-								contentAdapter = new ContentAdapter(
-										BibleActivity.this, bibleData
-												.get(chapterNumber));
-								content.setAdapter(contentAdapter);
-								contentAdapter.dataChange();
-								next.setVisibility(View.VISIBLE);
-								prev.setVisibility(View.VISIBLE);
-								selected_book_name
-										.setText(booksArray1[currentBookNumber]
-												+ ":");
-								selected_chapter_number.setText(String
-										.valueOf((chapterNumber + 1)));
-
-							}
+							onChapterSelection(false);
 							dialog.dismiss();
 						}
 					});
@@ -365,45 +208,17 @@ public class BibleActivity extends Activity implements BgDataHandler,
 		next.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (chapterNumber >= bibleData.size()-1) {
+				if (chapterNumber >= bibleData.size() - 1) {
 
 				} else if (chapterNumber == bibleData.size() - 2) {
 					chapterNumber++;
-					contentAdapter = new ContentAdapter(BibleActivity.this,
-							bibleData.get(chapterNumber));
-					content.setAdapter(contentAdapter);
-					contentAdapter.dataChange();
 					prev.setVisibility(View.VISIBLE);
 					next.setVisibility(View.INVISIBLE);
-					if (testamentOld) {
-						selected_book_name
-								.setText(booksArray[currentBookNumber] + ":");
-						selected_chapter_number.setText(String
-								.valueOf((chapterNumber + 1)));
-					} else {
-						selected_book_name
-								.setText(booksArray1[currentBookNumber] + ":");
-						selected_chapter_number.setText(String
-								.valueOf((chapterNumber + 1)));
-					}
+					changeChapter();
 				} else {
 					chapterNumber++;
-					contentAdapter = new ContentAdapter(BibleActivity.this,
-							bibleData.get(chapterNumber));
-					content.setAdapter(contentAdapter);
-					contentAdapter.dataChange();
 					prev.setVisibility(View.VISIBLE);
-					if (testamentOld) {
-						selected_book_name
-								.setText(booksArray[currentBookNumber] + ":");
-						selected_chapter_number.setText(String
-								.valueOf((chapterNumber + 1)));
-					} else {
-						selected_book_name
-								.setText(booksArray1[currentBookNumber] + ":");
-						selected_chapter_number.setText(String
-								.valueOf((chapterNumber + 1)));
-					}
+					changeChapter();
 				}
 			}
 		});
@@ -412,46 +227,16 @@ public class BibleActivity extends Activity implements BgDataHandler,
 
 			@Override
 			public void onClick(View v) {
-				if (chapterNumber <= 0) {
-
-				} else if (chapterNumber == 1) {
+				if (chapterNumber == 1) {
 					chapterNumber--;
-					contentAdapter = new ContentAdapter(BibleActivity.this,
-							bibleData.get(chapterNumber));
-					content.setAdapter(contentAdapter);
-					contentAdapter.dataChange();
 					prev.setVisibility(View.INVISIBLE);
 					next.setVisibility(View.VISIBLE);
-					if (testamentOld) {
-						selected_book_name
-								.setText(booksArray[currentBookNumber] + ":");
-						selected_chapter_number.setText(String
-								.valueOf((chapterNumber + 1)));
-					} else {
-						selected_book_name
-								.setText(booksArray1[currentBookNumber] + ":");
-						selected_chapter_number.setText(String
-								.valueOf((chapterNumber + 1)));
-					}
-				} else {
+					changeChapter();
+				} else if (chapterNumber > 1) {
 					chapterNumber--;
-					contentAdapter = new ContentAdapter(BibleActivity.this,
-							bibleData.get(chapterNumber));
-					content.setAdapter(contentAdapter);
-					contentAdapter.dataChange();
 					prev.setVisibility(View.VISIBLE);
 					next.setVisibility(View.VISIBLE);
-					if (testamentOld) {
-						selected_book_name
-								.setText(booksArray[currentBookNumber] + ":");
-						selected_chapter_number.setText(String
-								.valueOf((chapterNumber + 1)));
-					} else {
-						selected_book_name
-								.setText(booksArray1[currentBookNumber] + ":");
-						selected_chapter_number.setText(String
-								.valueOf((chapterNumber + 1)));
-					}
+					changeChapter();
 				}
 			}
 		});
@@ -494,35 +279,11 @@ public class BibleActivity extends Activity implements BgDataHandler,
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
 										int id) {
-									if (testamentOld) {
-
-									} else {
+									if (!testamentOld) {
 										testamentOld = true;
 										currentBookNumber = 0;
 										chapterNumber = 0;
-										InputStream iS = null;
-										try {
-											iS = getResources()
-													.getAssets()
-													.open("testament1/book1.txt");
-										} catch (IOException e1) {
-											e1.printStackTrace();
-										}
-										SAXParserFactory factory = SAXParserFactory
-												.newInstance();
-										try {
-											SAXParser parser = factory
-													.newSAXParser();
-											if (iS != null)
-												parser.parse(iS, new SaxHelper(
-														BibleActivity.this));
-										} catch (ParserConfigurationException e) {
-											e.printStackTrace();
-										} catch (SAXException e) {
-											e.printStackTrace();
-										} catch (IOException e) {
-											e.printStackTrace();
-										}
+										parseFile("testament1/book1.txt");
 										selected_book_name
 												.setText(booksArray[0] + ":");
 										selected_chapter_number.setText(String
@@ -536,35 +297,11 @@ public class BibleActivity extends Activity implements BgDataHandler,
 
 								public void onClick(DialogInterface dialog,
 										int id) {
-									if (!testamentOld) {
-
-									} else {
+									if (testamentOld) {
 										testamentOld = false;
 										currentBookNumber = 0;
 										chapterNumber = 0;
-										InputStream iS = null;
-										try {
-											iS = getResources()
-													.getAssets()
-													.open("testament2/book1.txt");
-										} catch (IOException e1) {
-											e1.printStackTrace();
-										}
-										SAXParserFactory factory = SAXParserFactory
-												.newInstance();
-										try {
-											SAXParser parser = factory
-													.newSAXParser();
-											if (iS != null)
-												parser.parse(iS, new SaxHelper(
-														BibleActivity.this));
-										} catch (ParserConfigurationException e) {
-											e.printStackTrace();
-										} catch (SAXException e) {
-											e.printStackTrace();
-										} catch (IOException e) {
-											e.printStackTrace();
-										}
+										parseFile("testament2/book1.txt");
 										selected_book_name
 												.setText(booksArray1[0] + ":");
 										selected_chapter_number.setText(String
@@ -594,34 +331,10 @@ public class BibleActivity extends Activity implements BgDataHandler,
 					@Override
 					public void onItemClick(AdapterView<?> arg0, View arg1,
 							int arg2, long arg3) {
-						if (currentBookNumber == arg2) {
-
-						} else {
+						if (currentBookNumber != arg2) {
 							currentBookNumber = arg2;
 							chapterNumber = 0;
-							InputStream iS = null;
-							try {
-								iS = getResources().getAssets()
-										.open("testament1/book" + (arg2 + 1)
-												+ ".txt");
-							} catch (IOException e1) {
-								e1.printStackTrace();
-							}
-							SAXParserFactory factory = SAXParserFactory
-									.newInstance();
-							try {
-								SAXParser parser = factory.newSAXParser();
-								if (iS != null)
-									parser.parse(iS, new SaxHelper(
-											BibleActivity.this));
-
-							} catch (ParserConfigurationException e) {
-								e.printStackTrace();
-							} catch (SAXException e) {
-								e.printStackTrace();
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
+							parseFile("testament1/book" + (arg2 + 1) + ".txt");
 							selected_book_name.setText(booksArray[arg2] + ":");
 							selected_chapter_number.setText(String.valueOf(1));
 						}
@@ -636,34 +349,10 @@ public class BibleActivity extends Activity implements BgDataHandler,
 					@Override
 					public void onItemClick(AdapterView<?> arg0, View arg1,
 							int arg2, long arg3) {
-						if (currentBookNumber == arg2) {
-
-						} else {
+						if (currentBookNumber != arg2) {
 							currentBookNumber = arg2;
 							chapterNumber = 0;
-							InputStream iS = null;
-							try {
-								iS = getResources().getAssets()
-										.open("testament2/book" + (arg2 + 1)
-												+ ".txt");
-							} catch (IOException e1) {
-								e1.printStackTrace();
-							}
-							SAXParserFactory factory = SAXParserFactory
-									.newInstance();
-							try {
-								SAXParser parser = factory.newSAXParser();
-								if (iS != null)
-									parser.parse(iS, new SaxHelper(
-											BibleActivity.this));
-
-							} catch (ParserConfigurationException e) {
-								e.printStackTrace();
-							} catch (SAXException e) {
-								e.printStackTrace();
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
+							parseFile("testament2/book" + (arg2 + 1) + ".txt");
 							selected_book_name.setText(booksArray1[arg2] + ":");
 							selected_chapter_number.setText(String.valueOf(1));
 						}
@@ -675,6 +364,95 @@ public class BibleActivity extends Activity implements BgDataHandler,
 			break;
 		}
 		return true;
+	}
+
+	private void changeChapter() {
+		contentAdapter = new ContentAdapter(BibleActivity.this,
+				bibleData.get(chapterNumber));
+		content.setAdapter(contentAdapter);
+		contentAdapter.dataChange();
+		if (testamentOld) {
+			selected_book_name.setText(booksArray[currentBookNumber] + ":");
+			selected_chapter_number
+					.setText(String.valueOf((chapterNumber + 1)));
+		} else {
+			selected_book_name.setText(booksArray1[currentBookNumber] + ":");
+			selected_chapter_number
+					.setText(String.valueOf((chapterNumber + 1)));
+		}
+	}
+
+	private void onChapterSelection(boolean isOld) {
+		if (chapterNumber == 0) {
+			contentAdapter = new ContentAdapter(BibleActivity.this,
+					bibleData.get(chapterNumber));
+			content.setAdapter(contentAdapter);
+			contentAdapter.dataChange();
+			prev.setVisibility(View.INVISIBLE);
+			next.setVisibility(View.VISIBLE);
+			if (isOld) {
+				selected_book_name
+						.setText(booksArray1[currentBookNumber] + ":");
+			} else {
+				selected_book_name.setText(booksArray[currentBookNumber] + ":");
+			}
+			selected_chapter_number
+					.setText(String.valueOf((chapterNumber + 1)));
+		} else if (chapterNumber == bibleData.size() - 1) {
+			contentAdapter = new ContentAdapter(BibleActivity.this,
+					bibleData.get(chapterNumber));
+			content.setAdapter(contentAdapter);
+			contentAdapter.dataChange();
+			next.setVisibility(View.INVISIBLE);
+			prev.setVisibility(View.VISIBLE);
+			if (isOld) {
+				selected_book_name
+						.setText(booksArray1[currentBookNumber] + ":");
+			} else {
+				selected_book_name.setText(booksArray[currentBookNumber] + ":");
+			}
+			selected_chapter_number
+					.setText(String.valueOf((chapterNumber + 1)));
+
+		} else {
+			contentAdapter = new ContentAdapter(BibleActivity.this,
+					bibleData.get(chapterNumber));
+			content.setAdapter(contentAdapter);
+			contentAdapter.dataChange();
+			next.setVisibility(View.VISIBLE);
+			prev.setVisibility(View.VISIBLE);
+			if (isOld) {
+				selected_book_name
+						.setText(booksArray1[currentBookNumber] + ":");
+			} else {
+				selected_book_name.setText(booksArray[currentBookNumber] + ":");
+			}
+			selected_chapter_number
+					.setText(String.valueOf((chapterNumber + 1)));
+
+		}
+	}
+
+	private void parseFile(String fileName) {
+		InputStream iS = null;
+		try {
+			iS = getResources().getAssets().open(fileName);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		SAXParserFactory factory = SAXParserFactory.newInstance();
+		try {
+			SAXParser parser = factory.newSAXParser();
+			if (iS != null)
+				parser.parse(iS, new SaxHelper(BibleActivity.this));
+
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		} catch (SAXException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -695,16 +473,16 @@ public class BibleActivity extends Activity implements BgDataHandler,
 
 	@Override
 	public void onFailedToReceiveAd(Ad arg0, ErrorCode arg1) {
+		adView.stopLoading();
 	}
 
 	@Override
 	public void onLeaveApplication(Ad arg0) {
-
+		adView.stopLoading();
 	}
 
 	@Override
 	public void onPresentScreen(Ad arg0) {
-
 	}
 
 	@Override
@@ -731,15 +509,11 @@ public class BibleActivity extends Activity implements BgDataHandler,
 		public void run() {
 			try {
 				while (threadRunnningStatus) {
-					sleep(2000);
-					if (threadRunnningStatus) {
-						if (isOnline()) {
-							System.out.println("internet");
-							threadRunnningStatus = false;
-							adView.loadAd(new AdRequest());
-						} else {
-							System.out.println("no internet");
-						}
+					if (isOnline()) {
+						threadRunnningStatus = false;
+						adView.loadAd(new AdRequest());
+					} else {
+						sleep(2000);
 					}
 				}
 			} catch (InterruptedException e) {
@@ -757,96 +531,28 @@ public class BibleActivity extends Activity implements BgDataHandler,
 					return false;
 				// right to left swipe
 				if (e1.getX() - e2.getX() > 120 && Math.abs(velocityX) > 200) {
-					if (chapterNumber >= bibleData.size()-1) {
+					if (chapterNumber >= bibleData.size() - 1) {
 
 					} else if (chapterNumber == bibleData.size() - 2) {
 						chapterNumber++;
-						contentAdapter = new ContentAdapter(BibleActivity.this,
-								bibleData.get(chapterNumber));
-						content.setAdapter(contentAdapter);
-						contentAdapter.dataChange();
 						prev.setVisibility(View.VISIBLE);
 						next.setVisibility(View.INVISIBLE);
-						if (testamentOld) {
-							selected_book_name
-									.setText(booksArray[currentBookNumber]
-											+ ":");
-							selected_chapter_number.setText(String
-									.valueOf((chapterNumber + 1)));
-						} else {
-							selected_book_name
-									.setText(booksArray1[currentBookNumber]
-											+ ":");
-							selected_chapter_number.setText(String
-									.valueOf((chapterNumber + 1)));
-						}
+						changeChapter();
 					} else {
 						chapterNumber++;
-						contentAdapter = new ContentAdapter(BibleActivity.this,
-								bibleData.get(chapterNumber));
-						content.setAdapter(contentAdapter);
-						contentAdapter.dataChange();
 						prev.setVisibility(View.VISIBLE);
-						if (testamentOld) {
-							selected_book_name
-									.setText(booksArray[currentBookNumber]
-											+ ":");
-							selected_chapter_number.setText(String
-									.valueOf((chapterNumber + 1)));
-						} else {
-							selected_book_name
-									.setText(booksArray1[currentBookNumber]
-											+ ":");
-							selected_chapter_number.setText(String
-									.valueOf((chapterNumber + 1)));
-						}
+						changeChapter();
 					}
 				} else if (e2.getX() - e1.getX() > 120
 						&& Math.abs(velocityX) > 200) {
-					if (chapterNumber <= 0) {
-
-					} else if (chapterNumber == 1) {
+					if (chapterNumber == 1) {
 						chapterNumber--;
-						contentAdapter = new ContentAdapter(BibleActivity.this,
-								bibleData.get(chapterNumber));
-						content.setAdapter(contentAdapter);
-						contentAdapter.dataChange();
 						prev.setVisibility(View.INVISIBLE);
-						next.setVisibility(View.VISIBLE);
-						if (testamentOld) {
-							selected_book_name
-									.setText(booksArray[currentBookNumber]
-											+ ":");
-							selected_chapter_number.setText(String
-									.valueOf((chapterNumber + 1)));
-						} else {
-							selected_book_name
-									.setText(booksArray1[currentBookNumber]
-											+ ":");
-							selected_chapter_number.setText(String
-									.valueOf((chapterNumber + 1)));
-						}
-					} else {
+						next.setVisibility(View.VISIBLE);						
+					} else if (chapterNumber > 1) {
 						chapterNumber--;
-						contentAdapter = new ContentAdapter(BibleActivity.this,
-								bibleData.get(chapterNumber));
-						content.setAdapter(contentAdapter);
-						contentAdapter.dataChange();
 						prev.setVisibility(View.VISIBLE);
-						next.setVisibility(View.VISIBLE);
-						if (testamentOld) {
-							selected_book_name
-									.setText(booksArray[currentBookNumber]
-											+ ":");
-							selected_chapter_number.setText(String
-									.valueOf((chapterNumber + 1)));
-						} else {
-							selected_book_name
-									.setText(booksArray1[currentBookNumber]
-											+ ":");
-							selected_chapter_number.setText(String
-									.valueOf((chapterNumber + 1)));
-						}
+						next.setVisibility(View.VISIBLE);						
 					}
 				}
 			} catch (Exception e) {

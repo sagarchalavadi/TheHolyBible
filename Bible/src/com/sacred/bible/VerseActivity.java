@@ -2,6 +2,8 @@ package com.sacred.bible;
 
 import java.util.ArrayList;
 
+import com.sacred.bible.util.Util;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.GestureDetector;
@@ -30,6 +32,8 @@ public class VerseActivity extends Activity {
 	private boolean testamentOld;
 	private ZoomControls zoomControls;
 	private int curentZoomValue;
+	private String[] booksArray;
+	private String[] booksArray1;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -42,6 +46,9 @@ public class VerseActivity extends Activity {
 		prev = (ImageView) findViewById(R.id.prevVerse);
 		next = (ImageView) findViewById(R.id.nextVerse);
 		zoomControls = (ZoomControls) findViewById(R.id.zoomcontrols);
+		Util util = new Util();
+		booksArray = util.getBookArray();
+		booksArray1 = util.getBookArray1();
 		verses = (ArrayList<String>) getIntent().getExtras().getSerializable(
 				"content");
 		position = getIntent().getExtras().getInt("clickedpostion");
@@ -59,13 +66,7 @@ public class VerseActivity extends Activity {
 		if (position == verses.size() - 1) {
 			next.setVisibility(View.INVISIBLE);
 		}
-		if (testamentOld) {
-			title.setText("Old -" + BibleActivity.booksArray[currentBookNumber]
-					+ " -" + (chapterNumber + 1) + " -" + (position + 1));
-		} else {
-			title.setText("New -" + BibleActivity.booksArray[currentBookNumber]
-					+ " -" + (chapterNumber + 1) + " -" + (position + 1));
-		}
+		setTitle();	
 		verse.setText("" + (position + 1) + ". " + verses.get(position));
 		gestureDetector = new GestureDetector(new MyGestureDetector());
 		gestureListener = new View.OnTouchListener() {
@@ -92,34 +93,14 @@ public class VerseActivity extends Activity {
 
 				} else if (position == verses.size() - 2) {
 					position++;
-					if (testamentOld) {
-						title.setText("Old -"
-								+ BibleActivity.booksArray[currentBookNumber]
-								+ " -" + (chapterNumber + 1) + " -"
-								+ (position + 1));
-					} else {
-						title.setText("New -"
-								+ BibleActivity.booksArray[currentBookNumber]
-								+ " -" + (chapterNumber + 1) + " -"
-								+ (position + 1));
-					}
+					setTitle();
 					verse.setText("" + (position + 1) + ". "
 							+ verses.get(position));
 					prev.setVisibility(View.VISIBLE);
 					next.setVisibility(View.INVISIBLE);
 				} else {
 					position++;
-					if (testamentOld) {
-						title.setText("Old -"
-								+ BibleActivity.booksArray[currentBookNumber]
-								+ " -" + (chapterNumber + 1) + " -"
-								+ (position + 1));
-					} else {
-						title.setText("New -"
-								+ BibleActivity.booksArray[currentBookNumber]
-								+ " -" + (chapterNumber + 1) + " -"
-								+ (position + 1));
-					}
+					setTitle();
 					verse.setText("" + (position + 1) + ". "
 							+ verses.get(position));
 					prev.setVisibility(View.VISIBLE);
@@ -135,34 +116,14 @@ public class VerseActivity extends Activity {
 
 				} else if (position == 1) {
 					position--;
-					if (testamentOld) {
-						title.setText("Old -"
-								+ BibleActivity.booksArray[currentBookNumber]
-								+ " -" + (chapterNumber + 1) + " -"
-								+ (position + 1));
-					} else {
-						title.setText("New -"
-								+ BibleActivity.booksArray[currentBookNumber]
-								+ " -" + (chapterNumber + 1) + " -"
-								+ (position + 1));
-					}
+					setTitle();
 					verse.setText("" + (position + 1) + ". "
 							+ verses.get(position));
 					prev.setVisibility(View.INVISIBLE);
 					next.setVisibility(View.VISIBLE);
 				} else {
 					position--;
-					if (testamentOld) {
-						title.setText("Old -"
-								+ BibleActivity.booksArray[currentBookNumber]
-								+ " -" + (chapterNumber + 1) + " -"
-								+ (position + 1));
-					} else {
-						title.setText("New -"
-								+ BibleActivity.booksArray[currentBookNumber]
-								+ " -" + (chapterNumber + 1) + " -"
-								+ (position + 1));
-					}
+					setTitle();
 					verse.setText("" + (position + 1) + ". "
 							+ verses.get(position));
 					prev.setVisibility(View.VISIBLE);
@@ -198,6 +159,16 @@ public class VerseActivity extends Activity {
 			}
 		});
 	}
+	
+	private void setTitle(){
+		if (testamentOld) {
+			title.setText("Old -" + booksArray[currentBookNumber]
+					+ " -" + (chapterNumber + 1) + " -" + (position + 1));
+		} else {
+			title.setText("New -" + booksArray1[currentBookNumber]
+					+ " -" + (chapterNumber + 1) + " -" + (position + 1));
+		}
+	}
 
 	class MyGestureDetector extends SimpleOnGestureListener {
 		@Override
@@ -212,34 +183,14 @@ public class VerseActivity extends Activity {
 
 					} else if (position == verses.size() - 2) {
 						position++;
-						if (testamentOld) {
-							title.setText("Old -"
-									+ BibleActivity.booksArray[currentBookNumber]
-									+ " -" + (chapterNumber + 1) + " -"
-									+ (position + 1));
-						} else {
-							title.setText("New -"
-									+ BibleActivity.booksArray[currentBookNumber]
-									+ " -" + (chapterNumber + 1) + " -"
-									+ (position + 1));
-						}
+						setTitle();
 						verse.setText("" + (position + 1) + ". "
 								+ verses.get(position));
 						prev.setVisibility(View.VISIBLE);
 						next.setVisibility(View.INVISIBLE);
 					} else {
 						position++;
-						if (testamentOld) {
-							title.setText("Old -"
-									+ BibleActivity.booksArray[currentBookNumber]
-									+ " -" + (chapterNumber + 1) + " -"
-									+ (position + 1));
-						} else {
-							title.setText("New -"
-									+ BibleActivity.booksArray[currentBookNumber]
-									+ " -" + (chapterNumber + 1) + " -"
-									+ (position + 1));
-						}
+						setTitle();
 						verse.setText("" + (position + 1) + ". "
 								+ verses.get(position));
 						prev.setVisibility(View.VISIBLE);
@@ -251,34 +202,14 @@ public class VerseActivity extends Activity {
 
 					} else if (position == 1) {
 						position--;
-						if (testamentOld) {
-							title.setText("Old -"
-									+ BibleActivity.booksArray[currentBookNumber]
-									+ " -" + (chapterNumber + 1) + " -"
-									+ (position + 1));
-						} else {
-							title.setText("New -"
-									+ BibleActivity.booksArray[currentBookNumber]
-									+ " -" + (chapterNumber + 1) + " -"
-									+ (position + 1));
-						}
+						setTitle();
 						verse.setText("" + (position + 1) + ". "
 								+ verses.get(position));
 						prev.setVisibility(View.INVISIBLE);
 						next.setVisibility(View.VISIBLE);
 					} else {
 						position--;
-						if (testamentOld) {
-							title.setText("Old -"
-									+ BibleActivity.booksArray[currentBookNumber]
-									+ " -" + (chapterNumber + 1) + " -"
-									+ (position + 1));
-						} else {
-							title.setText("New -"
-									+ BibleActivity.booksArray[currentBookNumber]
-									+ " -" + (chapterNumber + 1) + " -"
-									+ (position + 1));
-						}
+						setTitle();
 						verse.setText("" + (position + 1) + ". "
 								+ verses.get(position));
 						prev.setVisibility(View.VISIBLE);
