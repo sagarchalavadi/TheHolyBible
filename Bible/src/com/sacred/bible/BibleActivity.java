@@ -65,15 +65,6 @@ public class BibleActivity extends Activity implements BgDataHandler,
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// ((TextView) ((FrameLayout) ((LinearLayout) ((ViewGroup) getWindow()
-		// .getDecorView()).getChildAt(0)).getChildAt(0)).getChildAt(0))
-		// .setGravity(Gravity.CENTER);
-		// ((TextView) ((FrameLayout) ((LinearLayout) ((ViewGroup) getWindow()
-		// .getDecorView()).getChildAt(0)).getChildAt(0)).getChildAt(0))
-		// .setTextColor(Color.WHITE);
-		// ((TextView) ((FrameLayout) ((LinearLayout) ((ViewGroup) getWindow()
-		// .getDecorView()).getChildAt(0)).getChildAt(0)).getChildAt(0))
-		// .setTextSize(18);
 		setContentView(R.layout.main);
 		next = (ImageView) findViewById(R.id.nextBook);
 		prev = (ImageView) findViewById(R.id.prevBook);
@@ -85,8 +76,9 @@ public class BibleActivity extends Activity implements BgDataHandler,
 		Util util = new Util();
 		booksArray = util.getBookArray();
 		booksArray1 = util.getBookArray1();
-		threadRunnningStatus = true;
-		adThread.start();
+		if (isOnline()) {
+			adView.loadAd(new AdRequest());
+		}
 		adView = (AdView) BibleActivity.this.findViewById(R.id.adView);
 		LinearLayout layout = (LinearLayout) findViewById(R.id.adLayout);
 		layout.removeAllViews();
@@ -500,27 +492,7 @@ public class BibleActivity extends Activity implements BgDataHandler,
 		} else {
 			return false;
 		}
-	}
-
-	private boolean threadRunnningStatus;
-
-	Thread adThread = new Thread() {
-		@Override
-		public void run() {
-			try {
-				while (threadRunnningStatus) {
-					if (isOnline()) {
-						threadRunnningStatus = false;
-						adView.loadAd(new AdRequest());
-					} else {
-						sleep(2000);
-					}
-				}
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-	};
+	}	
 
 	class MyGestureDetector extends SimpleOnGestureListener {
 		@Override
