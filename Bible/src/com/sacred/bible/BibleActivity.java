@@ -75,14 +75,14 @@ public class BibleActivity extends Activity implements BgDataHandler,
 		content = (ListView) findViewById(R.id.bibleContent);
 		Util util = new Util();
 		booksArray = util.getBookArray();
-		booksArray1 = util.getBookArray1();
-		if (isOnline()) {
-			adView.loadAd(new AdRequest());
-		}
+		booksArray1 = util.getBookArray1();		
 		adView = (AdView) BibleActivity.this.findViewById(R.id.adView);
 		LinearLayout layout = (LinearLayout) findViewById(R.id.adLayout);
 		layout.removeAllViews();
 		layout.addView(adView);
+		if (isOnline()) {
+			adView.loadAd(new AdRequest());
+		}
 		gestureDetector = new GestureDetector(new MyGestureDetector());
 		gestureListener = new View.OnTouchListener() {
 			public boolean onTouch(View v, MotionEvent event) {
