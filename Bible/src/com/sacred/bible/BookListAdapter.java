@@ -14,8 +14,7 @@ public class BookListAdapter extends BaseAdapter {
 
 	private String[] bookList;
 
-	public BookListAdapter(BibleActivity xmlParsingActivity,
-			String[] booksList) {
+	public BookListAdapter(BibleActivity xmlParsingActivity, String[] booksList) {
 		activityReference = new WeakReference<BibleActivity>(xmlParsingActivity);
 		this.bookList = booksList;
 	}
@@ -41,19 +40,16 @@ public class BookListAdapter extends BaseAdapter {
 		if (convertView == null) {
 			holder = new Holder();
 			if (activityReference.get() != null) {
-				convertView = (View) LayoutInflater.from(
-						activityReference.get()).inflate(R.layout.book, null);
-				holder.name = (TextView) convertView
-						.findViewById(R.id.bookName);
-				holder.number = (TextView) convertView
-						.findViewById(R.id.bookNumber);
+				convertView = LayoutInflater.from(activityReference.get()).inflate(R.layout.book, null);
+				holder.name = (TextView) convertView.findViewById(R.id.bookName);
+				holder.number = (TextView) convertView.findViewById(R.id.bookNumber);
 				convertView.setTag(holder);
 			}
 		}
 		holder = (Holder) convertView.getTag();
 		if (holder != null) {
 			// holder.number.setText("" + (position + 1) + ". ");
-			holder.name.setText(bookList[position].trim());			
+			holder.name.setText(bookList[position].trim());
 		}
 
 		return convertView;

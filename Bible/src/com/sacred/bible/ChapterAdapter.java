@@ -39,11 +39,9 @@ public class ChapterAdapter extends BaseAdapter {
 		Holder holder;
 		if (convertView == null) {
 			if (activityReference.get() != null) {
-				convertView = (View) LayoutInflater.from(
-						activityReference.get()).inflate(R.layout.book, null);
+				convertView = LayoutInflater.from(activityReference.get()).inflate(R.layout.book, null);
 				holder = new Holder();
-				holder.chapterInfo = (TextView) convertView
-						.findViewById(R.id.bookName);
+				holder.chapterInfo = (TextView) convertView.findViewById(R.id.bookName);
 				convertView.setTag(holder);
 			}
 		}

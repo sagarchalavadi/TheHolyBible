@@ -2,8 +2,6 @@ package com.sacred.bible;
 
 import java.util.ArrayList;
 
-import com.sacred.bible.util.Util;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.GestureDetector;
@@ -15,6 +13,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ZoomControls;
+
+import com.sacred.bible.util.Util;
 
 public class VerseActivity extends Activity {
 
@@ -49,13 +49,10 @@ public class VerseActivity extends Activity {
 		Util util = new Util();
 		booksArray = util.getBookArray();
 		booksArray1 = util.getBookArray1();
-		verses = (ArrayList<String>) getIntent().getExtras().getSerializable(
-				"content");
+		verses = (ArrayList<String>) getIntent().getExtras().getSerializable("content");
 		position = getIntent().getExtras().getInt("clickedpostion");
-		currentBookNumber = getIntent().getExtras().getInt(
-				"currentbookposition");
-		chapterNumber = getIntent().getExtras()
-				.getInt("currentchapterposition");
+		currentBookNumber = getIntent().getExtras().getInt("currentbookposition");
+		chapterNumber = getIntent().getExtras().getInt("currentchapterposition");
 		curentZoomValue = 18;
 		testamentOld = getIntent().getExtras().getBoolean("testamentValue");
 		next.setVisibility(View.VISIBLE);
@@ -66,10 +63,11 @@ public class VerseActivity extends Activity {
 		if (position == verses.size() - 1) {
 			next.setVisibility(View.INVISIBLE);
 		}
-		setTitle();	
+		setTitle();
 		verse.setText("" + (position + 1) + ". " + verses.get(position));
 		gestureDetector = new GestureDetector(new MyGestureDetector());
 		gestureListener = new View.OnTouchListener() {
+			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (gestureDetector.onTouchEvent(event)) {
 					return true;
@@ -94,15 +92,13 @@ public class VerseActivity extends Activity {
 				} else if (position == verses.size() - 2) {
 					position++;
 					setTitle();
-					verse.setText("" + (position + 1) + ". "
-							+ verses.get(position));
+					verse.setText("" + (position + 1) + ". " + verses.get(position));
 					prev.setVisibility(View.VISIBLE);
 					next.setVisibility(View.INVISIBLE);
 				} else {
 					position++;
 					setTitle();
-					verse.setText("" + (position + 1) + ". "
-							+ verses.get(position));
+					verse.setText("" + (position + 1) + ". " + verses.get(position));
 					prev.setVisibility(View.VISIBLE);
 				}
 			}
@@ -117,15 +113,13 @@ public class VerseActivity extends Activity {
 				} else if (position == 1) {
 					position--;
 					setTitle();
-					verse.setText("" + (position + 1) + ". "
-							+ verses.get(position));
+					verse.setText("" + (position + 1) + ". " + verses.get(position));
 					prev.setVisibility(View.INVISIBLE);
 					next.setVisibility(View.VISIBLE);
 				} else {
 					position--;
 					setTitle();
-					verse.setText("" + (position + 1) + ". "
-							+ verses.get(position));
+					verse.setText("" + (position + 1) + ". " + verses.get(position));
 					prev.setVisibility(View.VISIBLE);
 					next.setVisibility(View.VISIBLE);
 				}
@@ -159,21 +153,18 @@ public class VerseActivity extends Activity {
 			}
 		});
 	}
-	
-	private void setTitle(){
+
+	private void setTitle() {
 		if (testamentOld) {
-			title.setText("Old -" + booksArray[currentBookNumber]
-					+ " -" + (chapterNumber + 1) + " -" + (position + 1));
+			title.setText("Old -" + booksArray[currentBookNumber] + " -" + (chapterNumber + 1) + " -" + (position + 1));
 		} else {
-			title.setText("New -" + booksArray1[currentBookNumber]
-					+ " -" + (chapterNumber + 1) + " -" + (position + 1));
+			title.setText("New -" + booksArray1[currentBookNumber] + " -" + (chapterNumber + 1) + " -" + (position + 1));
 		}
 	}
 
 	class MyGestureDetector extends SimpleOnGestureListener {
 		@Override
-		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
-				float velocityY) {
+		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 			try {
 				if (Math.abs(e1.getY() - e2.getY()) > 250)
 					return false;
@@ -184,34 +175,29 @@ public class VerseActivity extends Activity {
 					} else if (position == verses.size() - 2) {
 						position++;
 						setTitle();
-						verse.setText("" + (position + 1) + ". "
-								+ verses.get(position));
+						verse.setText("" + (position + 1) + ". " + verses.get(position));
 						prev.setVisibility(View.VISIBLE);
 						next.setVisibility(View.INVISIBLE);
 					} else {
 						position++;
 						setTitle();
-						verse.setText("" + (position + 1) + ". "
-								+ verses.get(position));
+						verse.setText("" + (position + 1) + ". " + verses.get(position));
 						prev.setVisibility(View.VISIBLE);
 					}
 
-				} else if (e2.getX() - e1.getX() > 120
-						&& Math.abs(velocityX) > 200) {
+				} else if (e2.getX() - e1.getX() > 120 && Math.abs(velocityX) > 200) {
 					if (position <= 0) {
 
 					} else if (position == 1) {
 						position--;
 						setTitle();
-						verse.setText("" + (position + 1) + ". "
-								+ verses.get(position));
+						verse.setText("" + (position + 1) + ". " + verses.get(position));
 						prev.setVisibility(View.INVISIBLE);
 						next.setVisibility(View.VISIBLE);
 					} else {
 						position--;
 						setTitle();
-						verse.setText("" + (position + 1) + ". "
-								+ verses.get(position));
+						verse.setText("" + (position + 1) + ". " + verses.get(position));
 						prev.setVisibility(View.VISIBLE);
 						next.setVisibility(View.VISIBLE);
 					}

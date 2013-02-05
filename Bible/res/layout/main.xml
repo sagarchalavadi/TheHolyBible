@@ -6,7 +6,7 @@
     android:background="#ffffff"
     android:orientation="vertical" >
 
-    <RelativeLayout
+    <!-- <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
 
@@ -43,9 +43,9 @@
                 android:textSize="14dip"
                 android:textStyle="bold" />
         </LinearLayout>
-    </RelativeLayout>
+    </RelativeLayout> -->
 
-    <RelativeLayout
+    <!-- <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
 
@@ -91,8 +91,11 @@
             android:layout_marginRight="5dip"
             android:gravity="right"
             android:src="@drawable/next" />
-    </RelativeLayout>
-    
+    </RelativeLayout> -->
+    <TextView android:id="@+id/book_info"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"/>
     <ListView
         android:id="@+id/bibleContent"
         android:layout_width="fill_parent"

@@ -15,8 +15,7 @@ public class ContentAdapter extends BaseAdapter {
 
 	private ArrayList<String> verses;
 
-	public ContentAdapter(BibleActivity xmlParsingActivity,
-			ArrayList<String> arrayList) {
+	public ContentAdapter(BibleActivity xmlParsingActivity, ArrayList<String> arrayList) {
 		activityReference = new WeakReference<BibleActivity>(xmlParsingActivity);
 		verses = arrayList;
 	}
@@ -42,17 +41,14 @@ public class ContentAdapter extends BaseAdapter {
 		if (convertView == null) {
 			holder = new Holder();
 			if (activityReference.get() != null) {
-				convertView = (View) LayoutInflater.from(
-						activityReference.get()).inflate(R.layout.quotes, null);
-				holder.textView = (TextView) convertView
-						.findViewById(R.id.quote);
+				convertView = LayoutInflater.from(activityReference.get()).inflate(R.layout.quotes, null);
+				holder.textView = (TextView) convertView.findViewById(R.id.quote);
 				convertView.setTag(holder);
 			}
 		}
 		holder = (Holder) convertView.getTag();
 		if (holder != null) {
-			holder.textView.setText("" + (position + 1) + ". "
-					+ verses.get(position));
+			holder.textView.setText("" + (position + 1) + ". " + verses.get(position));
 		}
 		return convertView;
 	}
