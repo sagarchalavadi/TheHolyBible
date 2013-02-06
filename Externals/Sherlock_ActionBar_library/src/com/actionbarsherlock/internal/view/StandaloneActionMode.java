@@ -15,11 +15,11 @@
  */
 package com.actionbarsherlock.internal.view;
 
+import java.lang.ref.WeakReference;
+
 import android.content.Context;
 import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
-
-import java.lang.ref.WeakReference;
 
 import com.actionbarsherlock.internal.view.menu.MenuBuilder;
 import com.actionbarsherlock.internal.view.menu.MenuPopupHelper;

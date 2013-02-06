@@ -16,8 +16,11 @@
 
 package com.actionbarsherlock.internal.view.menu;
 
+import static com.actionbarsherlock.internal.ResourcesCompat.getResources_getBoolean;
+
 import java.util.HashSet;
 import java.util.Set;
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
@@ -37,8 +40,6 @@ import com.actionbarsherlock.R;
 import com.actionbarsherlock.internal.view.View_HasStateListenerSupport;
 import com.actionbarsherlock.internal.view.View_OnAttachStateChangeListener;
 import com.actionbarsherlock.internal.widget.CapitalizingButton;
-
-import static com.actionbarsherlock.internal.ResourcesCompat.getResources_getBoolean;
 
 /**
  * @hide

@@ -16,19 +16,6 @@
 
 package com.actionbarsherlock.widget;
 
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.ResolveInfo;
-import android.database.DataSetObservable;
-import android.os.Handler;
-import android.text.TextUtils;
-import android.util.Log;
-import android.util.Xml;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlSerializer;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -43,6 +30,21 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlSerializer;
+
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ResolveInfo;
+import android.database.DataSetObservable;
+import android.database.DataSetObserver;
+import android.os.Handler;
+import android.text.TextUtils;
+import android.util.Log;
+import android.util.Xml;
 
 /**
  * <p>

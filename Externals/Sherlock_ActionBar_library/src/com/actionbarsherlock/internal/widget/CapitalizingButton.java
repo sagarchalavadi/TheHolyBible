@@ -1,6 +1,7 @@
 package com.actionbarsherlock.internal.widget;
 
 import java.util.Locale;
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;

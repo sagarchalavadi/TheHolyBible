@@ -2,10 +2,13 @@ package com.actionbarsherlock.internal;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static com.actionbarsherlock.internal.ResourcesCompat.getResources_getBoolean;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import org.xmlpull.v1.XmlPullParser;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
@@ -30,6 +33,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
 import com.actionbarsherlock.ActionBarSherlock;
 import com.actionbarsherlock.R;
 import com.actionbarsherlock.app.ActionBar;

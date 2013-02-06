@@ -2,15 +2,15 @@ package com.actionbarsherlock.app;
 
 import android.app.Activity;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.Watson.OnCreateOptionsMenuListener;
+import android.support.v4.app.Watson.OnOptionsItemSelectedListener;
+import android.support.v4.app.Watson.OnPrepareOptionsMenuListener;
+
 import com.actionbarsherlock.internal.view.menu.MenuItemWrapper;
 import com.actionbarsherlock.internal.view.menu.MenuWrapper;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-
-import static com.actionbarsherlock.app.SherlockFragmentActivity.OnCreateOptionsMenuListener;
-import static com.actionbarsherlock.app.SherlockFragmentActivity.OnOptionsItemSelectedListener;
-import static com.actionbarsherlock.app.SherlockFragmentActivity.OnPrepareOptionsMenuListener;
 
 public class SherlockFragment extends Fragment implements OnCreateOptionsMenuListener, OnPrepareOptionsMenuListener, OnOptionsItemSelectedListener {
     private SherlockFragmentActivity mActivity;

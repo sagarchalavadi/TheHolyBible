@@ -1,6 +1,7 @@
 package com.actionbarsherlock;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -9,6 +10,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Iterator;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -20,6 +22,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.internal.ActionBarSherlockCompat;
 import com.actionbarsherlock.internal.ActionBarSherlockNative;

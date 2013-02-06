@@ -1,16 +1,17 @@
 package android.support.v4.app;
 
+import java.util.ArrayList;
+
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+
 import com.actionbarsherlock.ActionBarSherlock.OnCreatePanelMenuListener;
 import com.actionbarsherlock.ActionBarSherlock.OnMenuItemSelectedListener;
 import com.actionbarsherlock.ActionBarSherlock.OnPreparePanelListener;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-
-import java.util.ArrayList;
 
 /** I'm in ur package. Stealing ur variables. */
 public abstract class Watson extends FragmentActivity implements OnCreatePanelMenuListener, OnPreparePanelListener, OnMenuItemSelectedListener {

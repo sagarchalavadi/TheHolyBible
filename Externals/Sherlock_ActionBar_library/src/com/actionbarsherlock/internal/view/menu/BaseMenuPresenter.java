@@ -17,6 +17,7 @@
 package com.actionbarsherlock.internal.view.menu;
 
 import java.util.ArrayList;
+
 import android.content.Context;
 import android.os.Build;
 import android.view.LayoutInflater;

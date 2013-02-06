@@ -16,6 +16,12 @@
 
 package com.actionbarsherlock.widget;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+import java.util.WeakHashMap;
+
 import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.content.ComponentName;
@@ -42,13 +48,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.actionbarsherlock.R;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-import java.util.WeakHashMap;
+import com.actionbarsherlock.R;
 
 /**
  * Provides the contents for the suggestion drop-down list.

@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.ViewDebug;
 import android.widget.LinearLayout;
 
+import com.actionbarsherlock.internal.view.menu.MenuView.ItemView;
 import com.actionbarsherlock.view.ActionProvider;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.SubMenu;

@@ -16,6 +16,11 @@
 
 package com.actionbarsherlock.widget;
 
+import static com.actionbarsherlock.widget.SuggestionsAdapter.getColumnString;
+
+import java.lang.reflect.Method;
+import java.util.WeakHashMap;
+
 import android.app.PendingIntent;
 import android.app.SearchManager;
 import android.app.SearchableInfo;
@@ -65,13 +70,9 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
+
 import com.actionbarsherlock.R;
 import com.actionbarsherlock.view.CollapsibleActionView;
-
-import java.lang.reflect.Method;
-import java.util.WeakHashMap;
-
-import static com.actionbarsherlock.widget.SuggestionsAdapter.getColumnString;
 
 /**
  * A widget that provides a user interface for the user to enter a search query and submit a request
