@@ -1,4 +1,4 @@
-package com.sacred.bible;
+package com.smartsofts.bible;
 
 import java.util.ArrayList;
 
@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ZoomControls;
 
-import com.sacred.bible.util.Util;
+import com.smartsofts.bible.util.Util;
 
 public class VerseActivity extends Activity {
 

@@ -1,4 +1,4 @@
-package com.sacred.bible;
+package com.smartsofts.bible;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;

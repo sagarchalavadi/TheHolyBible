@@ -3,13 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-
+<!-- EEAD0E -->
     <TextView
         android:id="@+id/quote"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#EEAD0E"
-        android:textStyle="bold"
         android:textSize="14dip" />
 
 </LinearLayout>

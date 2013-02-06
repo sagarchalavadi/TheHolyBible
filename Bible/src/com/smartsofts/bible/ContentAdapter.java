@@ -1,6 +1,7 @@
-package com.sacred.bible;
+package com.smartsofts.bible;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,20 +9,20 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-public class BookListAdapter extends BaseAdapter {
+public class ContentAdapter extends BaseAdapter {
 
 	private WeakReference<BibleActivity> activityReference;
 
-	private String[] bookList;
+	private ArrayList<String> verses;
 
-	public BookListAdapter(BibleActivity xmlParsingActivity, String[] booksList) {
+	public ContentAdapter(BibleActivity xmlParsingActivity, ArrayList<String> arrayList) {
 		activityReference = new WeakReference<BibleActivity>(xmlParsingActivity);
-		this.bookList = booksList;
+		verses = arrayList;
 	}
 
 	@Override
 	public int getCount() {
-		return bookList.length;
+		return verses.size();
 	}
 
 	@Override
@@ -40,18 +41,15 @@ public class BookListAdapter extends BaseAdapter {
 		if (convertView == null) {
 			holder = new Holder();
 			if (activityReference.get() != null) {
-				convertView = LayoutInflater.from(activityReference.get()).inflate(R.layout.book, null);
-				holder.name = (TextView) convertView.findViewById(R.id.bookName);
-				holder.number = (TextView) convertView.findViewById(R.id.bookNumber);
+				convertView = LayoutInflater.from(activityReference.get()).inflate(R.layout.quotes, null);
+				holder.textView = (TextView) convertView.findViewById(R.id.quote);
 				convertView.setTag(holder);
 			}
 		}
 		holder = (Holder) convertView.getTag();
 		if (holder != null) {
-			// holder.number.setText("" + (position + 1) + ". ");
-			holder.name.setText(bookList[position].trim());
+			holder.textView.setText("" + (position + 1) + ". " + verses.get(position));
 		}
-
 		return convertView;
 	}
 
@@ -60,8 +58,6 @@ public class BookListAdapter extends BaseAdapter {
 	}
 
 	class Holder {
-		public TextView number;
-		public TextView name;
+		public TextView textView;
 	}
-
 }

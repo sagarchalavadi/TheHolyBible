@@ -1,4 +1,8 @@
-package com.sacred.bible.util;
+package com.smartsofts.bible.util;
+
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 public class Util {
 	private String[] booksArray = new String[] { "Genesis", "Exodus", "Leviticus", "Numbers", "Deuteronomy", "Joshua",
@@ -17,5 +21,18 @@ public class Util {
 
 	public String[] getBookArray1() {
 		return booksArray1;
+	}
+	
+	public boolean isOnline(Context context) {
+		ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+		if (cm == null) {
+			return false;
+		}
+		NetworkInfo ni = cm.getActiveNetworkInfo();
+		if (ni != null) {
+			return ni.isConnectedOrConnecting();
+		} else {
+			return false;
+		}
 	}
 }

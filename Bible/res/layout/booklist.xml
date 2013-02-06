@@ -8,7 +8,7 @@
         android:id="@+id/booklist"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="#ffffff"
+        android:background="#D3D3D3"
         android:cacheColorHint="#00000000" >
     </ListView>
 

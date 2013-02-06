@@ -1,4 +1,4 @@
-package com.sacred.bible;
+package com.smartsofts.bible;
 
 import java.lang.ref.WeakReference;
 
@@ -8,20 +8,20 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-public class ChapterAdapter extends BaseAdapter {
+public class BookListAdapter extends BaseAdapter {
 
 	private WeakReference<BibleActivity> activityReference;
 
-	private int size;
+	private String[] bookList;
 
-	public ChapterAdapter(BibleActivity xmlParsingActivity, int size) {
+	public BookListAdapter(BibleActivity xmlParsingActivity, String[] booksList) {
 		activityReference = new WeakReference<BibleActivity>(xmlParsingActivity);
-		this.size = size;
+		this.bookList = booksList;
 	}
 
 	@Override
 	public int getCount() {
-		return size;
+		return bookList.length;
 	}
 
 	@Override
@@ -38,16 +38,19 @@ public class ChapterAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		Holder holder;
 		if (convertView == null) {
+			holder = new Holder();
 			if (activityReference.get() != null) {
 				convertView = LayoutInflater.from(activityReference.get()).inflate(R.layout.book, null);
-				holder = new Holder();
-				holder.chapterInfo = (TextView) convertView.findViewById(R.id.bookName);
+				holder.name = (TextView) convertView.findViewById(R.id.bookName);
+				holder.number = (TextView) convertView.findViewById(R.id.bookNumber);
 				convertView.setTag(holder);
 			}
 		}
 		holder = (Holder) convertView.getTag();
-		if (holder != null)
-			holder.chapterInfo.setText("Chapter No: " + (position + 1));
+		if (holder != null) {
+			// holder.number.setText("" + (position + 1) + ". ");
+			holder.name.setText(bookList[position].trim());
+		}
 
 		return convertView;
 	}
@@ -57,7 +60,8 @@ public class ChapterAdapter extends BaseAdapter {
 	}
 
 	class Holder {
-		public TextView chapterInfo;
+		public TextView number;
+		public TextView name;
 	}
 
 }
